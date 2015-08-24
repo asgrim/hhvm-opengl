@@ -1,4 +1,10 @@
 <?php
 
 $gl = new OpenGL();
-var_dump($gl);
+$gl->render();
+$f = $gl->getBackBufferContent();
+$c = file_get_contents($f);
+$gl->close();
+
+header('Content-Type:image/bmp');
+echo $c;
