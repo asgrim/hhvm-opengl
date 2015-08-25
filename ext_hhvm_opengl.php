@@ -9,6 +9,9 @@ class OpenGL {
     public function render(): void;
 
     <<__Native>>
+    public function setBackgroundColour(float $r, float $g, float $b, float $a): void;
+
+    <<__Native>>
     public function getBackBufferContent(): string;
 
     <<__Native>>

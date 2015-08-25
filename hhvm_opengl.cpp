@@ -59,7 +59,7 @@ namespace HPHP {
         glewInit();
         glfwSetWindowTitle( "Hello world" );
         glfwEnable( GLFW_STICKY_KEYS );
-        glClearColor(0.0f, 0.0f, 0.9f, 0.0f);
+        glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
         data->programID = LoadShaders( "shaders/SimpleVertexShader.vertexshader", "shaders/SimpleFragmentShader.fragmentshader" );
         data->MatrixID = glGetUniformLocation(data->programID, "MVP");
@@ -83,6 +83,15 @@ namespace HPHP {
         glGenBuffers(1, &data->vertexBuffer);
         glBindBuffer(GL_ARRAY_BUFFER, data->vertexBuffer);
         glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
+    }
+
+    void HHVM_METHOD(OpenGL, setBackgroundColour, double r, double g, double b, double a) {
+        glClearColor(
+            (GLclampf) r,
+            (GLclampf) g,
+            (GLclampf) b,
+            (GLclampf) a
+        );
     }
 
     void HHVM_METHOD(OpenGL, render) {
@@ -119,6 +128,7 @@ namespace HPHP {
         glReadBuffer(GL_BACK);
         glReadPixels(0, 0, data->width, data->height, GL_RGB, GL_UNSIGNED_BYTE, pixels);
 
+        // @todo get rid of the writing to disk and return BMP directly
         String filename = String("/tmp/lol.bmp");
         WriteBMP(filename.c_str(), data->width, data->height, pixels);
 
@@ -140,6 +150,7 @@ namespace HPHP {
 
             HHVM_ME(OpenGL, __construct);
             HHVM_ME(OpenGL, render);
+            HHVM_ME(OpenGL, setBackgroundColour);
             HHVM_ME(OpenGL, getBackBufferContent);
             HHVM_ME(OpenGL, close);
             Native::registerNativeDataInfo<OpenGL>(s_OpenGL.get());
