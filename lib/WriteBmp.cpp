@@ -41,7 +41,7 @@ void WriteBMP(const char *fname, int w,int h,unsigned char *img)
     unsigned char* bstr = new unsigned char[realw], *remstr = 0;
     if(rem != 0) { remstr = new unsigned char[rem]; memset(remstr,0,rem); }
 
-    for(int j = h-1 ; j > -1 ; j--){
+    for(int j = 0 ; j < h ; j++){
         for(int i = 0 ; i < w ; i++)
             for(int k = 0 ; k < 3 ; k++) { bstr[i*3+k] = img[(j*realw+i*3)+(2-k)]; }
         fwrite(bstr,realw,1,f); if (rem != 0) { fwrite(remstr,rem,1,f); }
