@@ -2,11 +2,22 @@
 
 $gl = new OpenGL(1024, 768);
 
-$v = new OpenGLTriangle(new OpenGLVertex(1, 1, 1), new OpenGLVertex(1, 1, 1), new OpenGLVertex(1, 1, 1));
-
 // Set the scene
 $gl->setBackgroundColour(0, 0, 0.1, 1);
-$gl->setVertexBuffer();
+$gl->setVertexBuffer(new OpenGLPolygon([
+    new OpenGLTriangle(new OpenGLVertex(-1, -1, -1), new OpenGLVertex(-1, -1, 1), new OpenGLVertex(-1, 1, 1)),
+    new OpenGLTriangle(new OpenGLVertex(1, 1, -1), new OpenGLVertex(-1, -1, -1), new OpenGLVertex(-1, 1, -1)),
+    new OpenGLTriangle(new OpenGLVertex(1, -1, 1), new OpenGLVertex(-1, -1, -1), new OpenGLVertex(1, -1, -1)),
+    new OpenGLTriangle(new OpenGLVertex(1, 1, -1), new OpenGLVertex(1, -1, -1), new OpenGLVertex(-1, -1, -1)),
+    new OpenGLTriangle(new OpenGLVertex(-1, -1, -1), new OpenGLVertex(-1, 1, 1), new OpenGLVertex(-1, 1, -1)),
+    new OpenGLTriangle(new OpenGLVertex(1, -1, 1), new OpenGLVertex(-1, -1, 1), new OpenGLVertex(-1, -1, -1)),
+    new OpenGLTriangle(new OpenGLVertex(-1, 1, 1), new OpenGLVertex(-1, -1, 1), new OpenGLVertex(1, -1, 1)),
+    new OpenGLTriangle(new OpenGLVertex(1, 1, 1), new OpenGLVertex(1, -1, -1), new OpenGLVertex(1, 1, -1)),
+    new OpenGLTriangle(new OpenGLVertex(1, -1, -1), new OpenGLVertex(1, 1, 1), new OpenGLVertex(1, -1, 1)),
+    new OpenGLTriangle(new OpenGLVertex(1, 1, 1), new OpenGLVertex(1, 1, -1), new OpenGLVertex(-1, 1, -1)),
+    new OpenGLTriangle(new OpenGLVertex(1, 1, 1), new OpenGLVertex(-1, 1, -1), new OpenGLVertex(-1, 1, 1)),
+    new OpenGLTriangle(new OpenGLVertex(1, 1, 1), new OpenGLVertex(-1, 1, 1), new OpenGLVertex(1, -1, 1)),
+]));
 $gl->setColourBuffer();
 
 // Render the scene

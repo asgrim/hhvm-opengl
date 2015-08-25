@@ -2,6 +2,8 @@
 
 #include "hphp/runtime/ext/extension.h"
 #include "hphp/runtime/vm/native-data.h"
+#include "hphp/runtime/vm/class.h"
+#include "hphp/runtime/base/execution-context.h"
 #include "../hhvm_opengl.h"
 
 #include <GL/glew.h>
@@ -104,47 +106,26 @@ void HHVM_METHOD(OpenGL, setBackgroundColour, double r, double g, double b, doub
     );
 }
 
-void HHVM_METHOD(OpenGL, setVertexBuffer) {
+void HHVM_METHOD(OpenGL, setVertexBuffer, const Object& polygon) {
     auto data = Native::data<OpenGL>(this_);
 
-    static const GLfloat g_vertex_buffer_data[] = {
-            -1.0f, -1.0f, -1.0f, // triangle 1 : begin
-            -1.0f, -1.0f, 1.0f,
-            -1.0f, 1.0f, 1.0f, // triangle 1 : end
-            1.0f, 1.0f, -1.0f, // triangle 2 : begin
-            -1.0f, -1.0f, -1.0f,
-            -1.0f, 1.0f, -1.0f, // triangle 2 : end
-            1.0f, -1.0f, 1.0f,
-            -1.0f, -1.0f, -1.0f,
-            1.0f, -1.0f, -1.0f,
-            1.0f, 1.0f, -1.0f,
-            1.0f, -1.0f, -1.0f,
-            -1.0f, -1.0f, -1.0f,
-            -1.0f, -1.0f, -1.0f,
-            -1.0f, 1.0f, 1.0f,
-            -1.0f, 1.0f, -1.0f,
-            1.0f, -1.0f, 1.0f,
-            -1.0f, -1.0f, 1.0f,
-            -1.0f, -1.0f, -1.0f,
-            -1.0f, 1.0f, 1.0f,
-            -1.0f, -1.0f, 1.0f,
-            1.0f, -1.0f, 1.0f,
-            1.0f, 1.0f, 1.0f,
-            1.0f, -1.0f, -1.0f,
-            1.0f, 1.0f, -1.0f,
-            1.0f, -1.0f, -1.0f,
-            1.0f, 1.0f, 1.0f,
-            1.0f, -1.0f, 1.0f,
-            1.0f, 1.0f, 1.0f,
-            1.0f, 1.0f, -1.0f,
-            -1.0f, 1.0f, -1.0f,
-            1.0f, 1.0f, 1.0f,
-            -1.0f, 1.0f, -1.0f,
-            -1.0f, 1.0f, 1.0f,
-            1.0f, 1.0f, 1.0f,
-            -1.0f, 1.0f, 1.0f,
-            1.0f, -1.0f, 1.0f
-    };
+    Class *theClass;
+    theClass = polygon.get()->getVMClass();
+    Func *method;
+    const StaticString s_toVerticesArray_function("toVerticesArray");
+    method = theClass->lookupMethod(s_toVerticesArray_function.get());
+
+    TypedValue args[0] = {};
+
+    Variant result;
+    g_context->invokeFuncFew(result.asTypedValue(), method, polygon.get(), nullptr, 0, args);
+    ArrayData *verticesArray = result.toArray().get();
+
+    GLfloat  g_vertex_buffer_data[verticesArray->getSize()];
+    size_t len = verticesArray->size();
+    for (int i = 0; i < len; i++) {
+        g_vertex_buffer_data[i] = (float)verticesArray->getValue(i).toDouble();
+    }
 
     data->vertexBufferSize = sizeof(g_vertex_buffer_data) / sizeof(GLfloat) / 3;
 
@@ -157,24 +138,24 @@ void HHVM_METHOD(OpenGL, setColourBuffer) {
     auto data = Native::data<OpenGL>(this_);
 
     static const GLfloat g_color_buffer_data[] = {
-            0.0f, 0.0f, 0.0f, // t1
-            0.0f, 0.0f, 0.0f,
-            0.0f, 0.0f, 0.0f,
-            0.0f, 0.0f, 0.0f, // t2
-            0.0f, 0.0f, 0.0f,
-            0.0f, 0.0f, 0.0f,
-            0.0f, 0.0f, 0.0f, // t3
-            0.0f, 0.0f, 0.0f,
-            0.0f, 0.0f, 0.0f,
-            0.0f, 0.0f, 0.0f, // t4
-            0.0f, 0.0f, 0.0f,
-            0.0f, 0.0f, 0.0f,
-            0.0f, 0.0f, 0.0f, // t5
-            0.0f, 0.0f, 0.0f,
-            0.0f, 0.0f, 0.0f,
-            0.0f, 0.0f, 0.0f, // t6
-            0.0f, 0.0f, 0.0f,
-            0.0f, 0.0f, 0.0f,
+            1.0f, 0.0f, 0.0f, // t1
+            1.0f, 0.0f, 0.0f,
+            1.0f, 0.0f, 0.0f,
+            0.0f, 1.0f, 0.0f, // t2
+            0.0f, 1.0f, 0.0f,
+            0.0f, 1.0f, 0.0f,
+            0.0f, 0.0f, 1.0f, // t3
+            0.0f, 0.0f, 1.0f,
+            0.0f, 0.0f, 1.0f,
+            1.0f, 0.0f, 1.0f, // t4
+            1.0f, 0.0f, 1.0f,
+            1.0f, 0.0f, 1.0f,
+            1.0f, 1.0f, 0.0f, // t5
+            1.0f, 1.0f, 0.0f,
+            1.0f, 1.0f, 0.0f,
+            0.0f, 1.0f, 1.0f, // t6
+            0.0f, 1.0f, 1.0f,
+            0.0f, 1.0f, 1.0f,
             0.6f, 0.0f, 0.0f, // t7 - face La
             0.6f, 0.0f, 0.0f,
             0.6f, 0.0f, 0.0f,

@@ -17,7 +17,7 @@ add_definitions(
     -lglfw
 )
 
-HHVM_EXTENSION(hhvm_opengl hhvm_opengl.cpp src/opengl.cpp src/opengl-vertex.cpp src/opengl-triangle.cpp lib/shader.cpp lib/WriteBmp.cpp)
+HHVM_EXTENSION(hhvm_opengl hhvm_opengl.cpp src/opengl.cpp lib/shader.cpp lib/WriteBmp.cpp)
 HHVM_SYSTEMLIB(hhvm_opengl ext_hhvm_opengl.php)
 
 target_link_libraries(hhvm_opengl ${OPENGL_LIBRARY} ${GLFW_LIBRARY} ${GLEW_LIBRARY})

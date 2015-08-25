@@ -14,8 +14,6 @@ namespace HPHP {
 
     private:
         void initOpenGLClass();
-        void initOpenGLVertexClass();
-        void initOpenGLTriangleClass();
     };
 }
 
