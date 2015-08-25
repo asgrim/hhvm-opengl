@@ -55,12 +55,12 @@ class OpenGLVertex {
 class OpenGLPolygon {
     private array<OpenGLVertex> $vertices;
 
-    public function __construct(array $vertices)
+    public function __construct(array $vertices): void
     {
         $this->addVertices($vertices);
     }
 
-    public function addVertices(array<OpenGLVertex> $vertices)
+    public function addVertices(array<OpenGLVertex> $vertices): void
     {
         foreach ($vertices as $v) {
             if ($v instanceof OpenGLPolygon) {
@@ -78,7 +78,7 @@ class OpenGLPolygon {
         return $this->vertices;
     }
 
-    public function toVerticesArray()
+    public function toVerticesArray(): array<float>
     {
         $vertices = [];
         foreach ($this->vertices as $vertex) {
@@ -92,8 +92,36 @@ class OpenGLPolygon {
 
 class OpenGLTriangle extends OpenGLPolygon
 {
-    public function __construct(OpenGLVertex $a, OpenGLVertex $b, OpenGLVertex $c)
+    public function __construct(OpenGLVertex $a, OpenGLVertex $b, OpenGLVertex $c): void
     {
         $this->addVertices([$a, $b, $c]);
+    }
+}
+
+class OpenGLCuboid extends OpenGLPolygon
+{
+    public function __construct(OpenGLVertex $origin, int $w, int $h, int $d): void
+    {
+        $oX = $origin->getX();
+        $oY = $origin->getY();
+        $oZ = $origin->getZ();
+        $nX = $oX + $w;
+        $nY = $oY + $h;
+        $nZ = $oZ + $d;
+
+        $this->addVertices([
+            new OpenGLTriangle(new OpenGLVertex($oX, $oY, $oZ), new OpenGLVertex($oX, $oY, $nZ), new OpenGLVertex($oX, $nY, $nZ)),
+            new OpenGLTriangle(new OpenGLVertex($nX, $nY, $oZ), new OpenGLVertex($oX, $oY, $oZ), new OpenGLVertex($oX, $nY, $oZ)),
+            new OpenGLTriangle(new OpenGLVertex($nX, $oY, $nZ), new OpenGLVertex($oX, $oY, $oZ), new OpenGLVertex($nX, $oY, $oZ)),
+            new OpenGLTriangle(new OpenGLVertex($nX, $nY, $oZ), new OpenGLVertex($nX, $oY, $oZ), new OpenGLVertex($oX, $oY, $oZ)),
+            new OpenGLTriangle(new OpenGLVertex($oX, $oY, $oZ), new OpenGLVertex($oX, $nY, $nZ), new OpenGLVertex($oX, $nY, $oZ)),
+            new OpenGLTriangle(new OpenGLVertex($nX, $oY, $nZ), new OpenGLVertex($oX, $oY, $nZ), new OpenGLVertex($oX, $oY, $oZ)),
+            new OpenGLTriangle(new OpenGLVertex($oX, $nY, $nZ), new OpenGLVertex($oX, $oY, $nZ), new OpenGLVertex($nX, $oY, $nZ)),
+            new OpenGLTriangle(new OpenGLVertex($nX, $nY, $nZ), new OpenGLVertex($nX, $oY, $oZ), new OpenGLVertex($nX, $nY, $oZ)),
+            new OpenGLTriangle(new OpenGLVertex($nX, $oY, $oZ), new OpenGLVertex($nX, $nY, $nZ), new OpenGLVertex($nX, $oY, $nZ)),
+            new OpenGLTriangle(new OpenGLVertex($nX, $nY, $nZ), new OpenGLVertex($nX, $nY, $oZ), new OpenGLVertex($oX, $nY, $oZ)),
+            new OpenGLTriangle(new OpenGLVertex($nX, $nY, $nZ), new OpenGLVertex($oX, $nY, $oZ), new OpenGLVertex($oX, $nY, $nZ)),
+            new OpenGLTriangle(new OpenGLVertex($nX, $nY, $nZ), new OpenGLVertex($oX, $nY, $nZ), new OpenGLVertex($nX, $oY, $nZ)),
+        ]);
     }
 }
