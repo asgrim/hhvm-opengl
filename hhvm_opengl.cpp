@@ -35,6 +35,7 @@ namespace HPHP {
         GLuint programID;
         GLuint vertexPosition_modelspaceID;
         GLuint vertexBuffer;
+        GLsizei vertexBufferSize;
         GLuint colourBuffer;
         GLuint MatrixID;
         glm::mat4 MVP;
@@ -136,6 +137,8 @@ namespace HPHP {
                 1.0f,-1.0f, 1.0f
         };
 
+        data->vertexBufferSize = sizeof(g_vertex_buffer_data) / sizeof(GLfloat) / 3;
+
         glGenBuffers(1, &data->vertexBuffer);
         glBindBuffer(GL_ARRAY_BUFFER, data->vertexBuffer);
         glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
@@ -221,7 +224,7 @@ namespace HPHP {
         );
 
         // Draw the triangle !
-        glDrawArrays(GL_TRIANGLES, 0, 12*3);
+        glDrawArrays(GL_TRIANGLES, 0, data->vertexBufferSize);
 
         glDisableVertexAttribArray(data->vertexPosition_modelspaceID);
 
