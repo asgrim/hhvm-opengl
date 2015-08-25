@@ -1,7 +1,10 @@
 #!/bin/bash
 
 hphpize
-cmake .
+cmake \
+    -DCMAKE_C_FLAGS="-O0 -ggdb3" \
+    -DCMAKE_CXX_FLAGS="-O0 -ggdb3" \
+    .
 make
 
 printf "=================================\n"
