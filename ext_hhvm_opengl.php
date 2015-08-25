@@ -23,3 +23,9 @@ class OpenGL {
     <<__Native>>
     public function close(): void;
 }
+
+<<__NativeData("OpenGLCoordinate")>>
+class OpenGLCoordinate {
+    <<__Native>>
+    public function __construct(int $x, int $y, int $z): void;
+}

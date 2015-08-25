@@ -14,6 +14,7 @@ namespace HPHP {
 
     private:
         void initOpenGLClass();
+        void initOpenGLCoordinateClass();
     };
 }
 

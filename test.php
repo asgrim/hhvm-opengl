@@ -2,6 +2,8 @@
 
 $gl = new OpenGL(1024, 768);
 
+$c = new OpenGLCoordinate(1, 1, 1);
+
 // Set the scene
 $gl->setBackgroundColour(0, 0, 0.1, 1);
 $gl->setVertexBuffer();
