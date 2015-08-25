@@ -55,10 +55,17 @@ namespace HPHP {
         glfwOpenWindowHint(GLFW_FSAA_SAMPLES, 4);
         glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 2);
         glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 1);
-        glfwOpenWindow(data->width, data->height, 1, 1, 1, 0, 32, 0, GLFW_WINDOW);
-        glewInit();
-        glfwSetWindowTitle( "Hello world" );
-        glfwEnable( GLFW_STICKY_KEYS );
+
+        if(!glfwOpenWindow(data->width, data->height, 0, 0, 0, 0, 32, 0, GLFW_WINDOW)) {
+            glfwTerminate();
+            throw Object(SystemLib::AllocExceptionObject("Failed to open GLFW window."));
+        }
+
+        if (glewInit() != GLEW_OK) {
+            glfwTerminate();
+            throw Object(SystemLib::AllocExceptionObject("Unable to init GLEW"));
+        }
+
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
         data->programID = LoadShaders( "shaders/SimpleVertexShader.vertexshader", "shaders/SimpleFragmentShader.fragmentshader" );
