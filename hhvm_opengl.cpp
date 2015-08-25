@@ -44,11 +44,11 @@ namespace HPHP {
         glm::mat4 Projection;
     };
 
-    void HHVM_METHOD(OpenGL, __construct) {
+    void HHVM_METHOD(OpenGL, __construct, int width, int height) {
         auto data = Native::data<OpenGL>(this_);
 
-        data->width = 1024;
-        data->height = 768;
+        data->width = width;
+        data->height = height;
 
         if (!glfwInit()) {
             throw Object(SystemLib::AllocExceptionObject("Unable to init GLFW"));

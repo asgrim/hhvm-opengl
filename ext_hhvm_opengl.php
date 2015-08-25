@@ -3,7 +3,7 @@
 <<__NativeData("OpenGL")>>
 class OpenGL {
     <<__Native>>
-    public function __construct(): void;
+    public function __construct(int $width, int $height): void;
 
     <<__Native>>
     public function render(): void;

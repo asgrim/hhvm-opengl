@@ -1,6 +1,6 @@
 <?php
 
-$gl = new OpenGL();
+$gl = new OpenGL(1024, 768);
 
 // Set the scene
 $gl->setBackgroundColour(0, 0, 0.1, 1);
