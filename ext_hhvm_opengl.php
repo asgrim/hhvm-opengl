@@ -24,8 +24,15 @@ class OpenGL {
     public function close(): void;
 }
 
-<<__NativeData("OpenGLCoordinate")>>
-class OpenGLCoordinate {
+<<__NativeData("OpenGLVertex")>>
+class OpenGLVertex {
     <<__Native>>
     public function __construct(int $x, int $y, int $z): void;
 }
+
+<<__NativeData("OpenGLTriangle")>>
+class OpenGLTriangle {
+    <<__Native>>
+    public function __construct(OpenGLVertex $a, OpenGLVertex $b, OpenGLVertex $c): void;
+}
+

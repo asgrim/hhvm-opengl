@@ -2,7 +2,7 @@
 
 $gl = new OpenGL(1024, 768);
 
-$c = new OpenGLCoordinate(1, 1, 1);
+$v = new OpenGLTriangle(new OpenGLVertex(1, 1, 1), new OpenGLVertex(1, 1, 1), new OpenGLVertex(1, 1, 1));
 
 // Set the scene
 $gl->setBackgroundColour(0, 0, 0.1, 1);

@@ -1,44 +1,45 @@
 #include "hphp/runtime/ext/extension.h"
 #include "hphp/runtime/vm/native-data.h"
 #include "../hhvm_opengl.h"
+#include "opengl-vertex.h"
 
 namespace HPHP {
 
 //////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////
 
-const StaticString s_OpenGLCoordinate("OpenGLCoordinate");
+const StaticString s_OpenGLTriangle("OpenGLTriangle");
 
-class OpenGLCoordinate {
+class OpenGLTriangle {
 public:
-    OpenGLCoordinate() { }
-    ~OpenGLCoordinate() { sweep(); }
+    OpenGLTriangle() { }
+    ~OpenGLTriangle() { sweep(); }
 
     void sweep() {
     }
 
-    int x;
-    int y;
-    int z;
+    Object a;
+    Object b;
+    Object c;
 };
 
 //////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////
 
+void HHVM_METHOD(OpenGLTriangle, __construct, const Object& a, const Object& b, const Object& c) {
+    auto data = Native::data<OpenGLTriangle>(this_);
 
-void HHVM_METHOD(OpenGLCoordinate, __construct, int x, int y, int z) {
-    auto data = Native::data<OpenGLCoordinate>(this_);
-    data->x = x;
-    data->y = y;
-    data->z = z;
+    data->a = a;
+    data->b = b;
+    data->c = c;
 }
 
 //////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////
 
-void HHVMOpenGLExtension::initOpenGLCoordinateClass() {
-    HHVM_ME(OpenGLCoordinate, __construct);
-    Native::registerNativeDataInfo<OpenGLCoordinate>(s_OpenGLCoordinate.get());
+void HHVMOpenGLExtension::initOpenGLTriangleClass() {
+    HHVM_ME(OpenGLTriangle, __construct);
+    Native::registerNativeDataInfo<OpenGLTriangle>(s_OpenGLTriangle.get());
 }
 
 //////////////////////////////////////////////////////////////////////

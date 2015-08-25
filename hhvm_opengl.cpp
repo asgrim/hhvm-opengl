@@ -8,7 +8,8 @@ HHVMOpenGLExtension::HHVMOpenGLExtension() :
 
 void HHVMOpenGLExtension::moduleInit() {
     initOpenGLClass();
-    initOpenGLCoordinateClass();
+    initOpenGLVertexClass();
+    initOpenGLTriangleClass();
     loadSystemlib();
 }
 
