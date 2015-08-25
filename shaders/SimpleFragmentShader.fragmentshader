@@ -2,8 +2,6 @@
 
 void main()
 {
-
-	// Output color = red 
+	// Output color = red
 	gl_FragColor = vec4(0.6,0,0,1);
-
 }
