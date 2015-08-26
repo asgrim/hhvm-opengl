@@ -48,8 +48,8 @@ class OpenGLColour {
     {
         return [
             $this->r * (1/255),
-            $this->g * (1/255),
             $this->b * (1/255),
+            $this->g * (1/255),
         ];
     }
 }
