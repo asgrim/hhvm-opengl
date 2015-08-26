@@ -3,8 +3,10 @@
 $gl = new OpenGL(1024, 768);
 
 // Set the scene
+$cube = new OpenGLCuboid(new OpenGLVertex(-1, -1, -1), 3, 2, 2);
+
 $gl->setBackgroundColour(0, 0, 0.1, 1);
-$gl->setVertexBuffer(new OpenGLCuboid(new OpenGLVertex(-1, -1, -1), 3, 2, 2));
+$gl->setVertexBuffer($cube->getVertexBuffer());
 $gl->setColourBuffer();
 
 // Render the scene

@@ -106,20 +106,10 @@ void HHVM_METHOD(OpenGL, setBackgroundColour, double r, double g, double b, doub
     );
 }
 
-void HHVM_METHOD(OpenGL, setVertexBuffer, const Object& polygon) {
+void HHVM_METHOD(OpenGL, setVertexBuffer, const Array& vertexBuffer) {
     auto data = Native::data<OpenGL>(this_);
 
-    Class *theClass;
-    theClass = polygon.get()->getVMClass();
-    Func *method;
-    const StaticString s_toVerticesArray_function("toVerticesArray");
-    method = theClass->lookupMethod(s_toVerticesArray_function.get());
-
-    TypedValue args[0] = {};
-
-    Variant result;
-    g_context->invokeFuncFew(result.asTypedValue(), method, polygon.get(), nullptr, 0, args);
-    ArrayData *verticesArray = result.toArray().get();
+    ArrayData *verticesArray = vertexBuffer.get();
 
     GLfloat  g_vertex_buffer_data[verticesArray->getSize()];
     size_t len = verticesArray->size();

@@ -9,7 +9,7 @@ class OpenGL {
     public function render(): void;
 
     <<__Native>>
-    public function setVertexBuffer(mixed $v): void;
+    public function setVertexBuffer(array<float> $v): void;
 
     <<__Native>>
     public function setColourBuffer(): void;
@@ -78,7 +78,7 @@ class OpenGLPolygon {
         return $this->vertices;
     }
 
-    public function toVerticesArray(): array<float>
+    public function getVertexBuffer(): array<float>
     {
         $vertices = [];
         foreach ($this->vertices as $vertex) {
