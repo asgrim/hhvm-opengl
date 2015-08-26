@@ -3,11 +3,20 @@
 $gl = new OpenGL(1024, 768);
 
 // Set the scene
-$cube = new OpenGLCuboid(new OpenGLVertex(-1, -1, -1), 3, 2, 2);
+$redGrey = new OpenGLColour(195, 179, 179);
+$scenery = new OpenGLPolygon([
+    new OpenGLCuboid(new OpenGLVertex(0.9, -1, 0), 1, 1, 1),
+    new OpenGLCuboid(new OpenGLVertex(-2, -1, -0.5), 2, 2, 2),
+    new OpenGLCuboid(new OpenGLVertex(-7, -1, -1), 3, 3, 3),
+    new OpenGLPolygon([
+        new OpenGLTriangle(new OpenGLVertex(-20, -1, -20, $redGrey), new OpenGLVertex(10, -1, 10, $redGrey), new OpenGLVertex(10, -1, -20, $redGrey)),
+        new OpenGLTriangle(new OpenGLVertex(-20, -1, -20, $redGrey), new OpenGLVertex(-20, -1, 10, $redGrey), new OpenGLVertex(10, -1, 10, $redGrey)),
+    ]),
+]);
 
 $gl->setBackgroundColour(0, 0, 0.1, 1);
-$gl->setVertexBuffer($cube->getVertexBuffer());
-$gl->setColourBuffer($cube->getColourBuffer());
+$gl->setVertexBuffer($scenery->getVertexBuffer());
+$gl->setColourBuffer($scenery->getColourBuffer());
 
 // Render the scene
 $gl->render();
