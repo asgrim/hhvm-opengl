@@ -9,10 +9,10 @@ class OpenGL {
     public function render(): void;
 
     <<__Native>>
-    public function setVertexBuffer(array<float> $v): void;
+    public function setVertexBuffer(array<float> $vertices): void;
 
     <<__Native>>
-    public function setColourBuffer(): void;
+    public function setColourBuffer(array<float> $colours): void;
 
     <<__Native>>
     public function setBackgroundColour(float $r, float $g, float $b, float $a): void;
@@ -24,16 +24,53 @@ class OpenGL {
     public function close(): void;
 }
 
+class OpenGLColour {
+    private int $r;
+    private int $g;
+    private int $b;
+
+    public function __construct(int $r, int $b, int $g): void
+    {
+        $this->r = $this->checkRgbRange($r);
+        $this->g = $this->checkRgbRange($g);
+        $this->b = $this->checkRgbRange($b);
+    }
+
+    private function checkRgbRange(int $value): int
+    {
+        if ($value > 255 || $value < 0) {
+            throw new \InvalidArgumentException('Value must be between 0-255');
+        }
+        return $value;
+    }
+
+    public function getFloats(): array<float>
+    {
+        return [
+            $this->r * (1/255),
+            $this->g * (1/255),
+            $this->b * (1/255),
+        ];
+    }
+}
+
 class OpenGLVertex {
     private float $x;
     private float $y;
     private float $z;
+    private OpenGLColour $colour;
 
-    public function __construct(mixed $x, mixed $y, mixed $z): void
+    public function __construct(mixed $x, mixed $y, mixed $z, OpenGLColour $colour = null): void
     {
         $this->x = (float)$x;
         $this->y = (float)$y;
         $this->z = (float)$z;
+
+        if ($colour !== null) {
+            $this->colour = $colour;
+        } else {
+            $this->colour = new OpenGLColour(rand(0,255), rand(0,255), rand(0,255));
+        }
     }
 
     public function getX()
@@ -49,6 +86,16 @@ class OpenGLVertex {
     public function getZ()
     {
         return $this->z;
+    }
+
+    public function setColour(OpenGLColour $colour): void
+    {
+        return $this->colour;
+    }
+
+    public function getColour(): OpenGLColour
+    {
+        return $this->colour;
     }
 }
 
@@ -87,6 +134,17 @@ class OpenGLPolygon {
             $vertices[] = $vertex->getZ();
         }
         return $vertices;
+    }
+
+    public function getColourBuffer(): array<float>
+    {
+        $colours = [];
+        foreach ($this->vertices as $vertex) {
+            $colours[] = $vertex->getColour()->getFloats()[0]; //r
+            $colours[] = $vertex->getColour()->getFloats()[1]; //g
+            $colours[] = $vertex->getColour()->getFloats()[2]; //b
+        }
+        return $colours;
     }
 }
 

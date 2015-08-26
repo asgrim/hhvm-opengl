@@ -7,7 +7,7 @@ $cube = new OpenGLCuboid(new OpenGLVertex(-1, -1, -1), 3, 2, 2);
 
 $gl->setBackgroundColour(0, 0, 0.1, 1);
 $gl->setVertexBuffer($cube->getVertexBuffer());
-$gl->setColourBuffer();
+$gl->setColourBuffer($cube->getColourBuffer());
 
 // Render the scene
 $gl->render();

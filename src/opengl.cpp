@@ -124,47 +124,16 @@ void HHVM_METHOD(OpenGL, setVertexBuffer, const Array& vertexBuffer) {
     glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
 }
 
-void HHVM_METHOD(OpenGL, setColourBuffer) {
+void HHVM_METHOD(OpenGL, setColourBuffer, const Array& colourBuffer) {
     auto data = Native::data<OpenGL>(this_);
 
-    static const GLfloat g_color_buffer_data[] = {
-            1.0f, 0.0f, 0.0f, // t1
-            1.0f, 0.0f, 0.0f,
-            1.0f, 0.0f, 0.0f,
-            0.0f, 1.0f, 0.0f, // t2
-            0.0f, 1.0f, 0.0f,
-            0.0f, 1.0f, 0.0f,
-            0.0f, 0.0f, 1.0f, // t3
-            0.0f, 0.0f, 1.0f,
-            0.0f, 0.0f, 1.0f,
-            1.0f, 0.0f, 1.0f, // t4
-            1.0f, 0.0f, 1.0f,
-            1.0f, 0.0f, 1.0f,
-            1.0f, 1.0f, 0.0f, // t5
-            1.0f, 1.0f, 0.0f,
-            1.0f, 1.0f, 0.0f,
-            0.0f, 1.0f, 1.0f, // t6
-            0.0f, 1.0f, 1.0f,
-            0.0f, 1.0f, 1.0f,
-            0.6f, 0.0f, 0.0f, // t7 - face La
-            0.6f, 0.0f, 0.0f,
-            0.6f, 0.0f, 0.0f,
-            0.0f, 0.6f, 0.0f, // t8 - face Rb
-            0.0f, 0.6f, 0.0f,
-            0.0f, 0.6f, 0.0f,
-            0.0f, 0.7f, 0.0f, // t9 - face Ra
-            0.0f, 0.7f, 0.0f,
-            0.0f, 0.7f, 0.0f,
-            0.0f, 0.0f, 0.6f, // t10 - face Tb
-            0.0f, 0.0f, 0.6f,
-            0.0f, 0.0f, 0.6f,
-            0.0f, 0.0f, 0.7f, // t11 - face Ta
-            0.0f, 0.0f, 0.7f,
-            0.0f, 0.0f, 0.7f,
-            0.7f, 0.0f, 0.0f, // t12 - face Lb
-            0.7f, 0.0f, 0.0f,
-            0.7f, 0.0f, 0.0f,
-    };
+    ArrayData *coloursArray = colourBuffer.get();
+
+    GLfloat  g_color_buffer_data[coloursArray->getSize()];
+    size_t len = coloursArray->size();
+    for (int i = 0; i < len; i++) {
+        g_color_buffer_data[i] = (float) coloursArray->getValue(i).toDouble();
+    }
 
     glGenBuffers(1, &data->colourBuffer);
     glBindBuffer(GL_ARRAY_BUFFER, data->colourBuffer);
