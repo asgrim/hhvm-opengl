@@ -14,7 +14,13 @@ $scenery = new OpenGLPolygon([
     ]),
 ]);
 
+$camera = new OpenGLCamera(4.0, 3.0, 45.0, 0.1, 100.0); // All params optional, given here for demo
+$camera->setCameraPosition(new OpenGLVertex(4, 3, 3));
+$camera->setCameraTarget(new OpenGLVertex(0, 0, 0));
+$camera->setYInvert(false);
+
 $gl->setBackgroundColour(0, 0, 0.1, 1);
+$gl->setCameraSettings($camera->getCameraSettings());
 $gl->setVertexBuffer($scenery->getVertexBuffer());
 $gl->setColourBuffer($scenery->getColourBuffer());
 

@@ -86,13 +86,26 @@ void HHVM_METHOD(OpenGL, __construct, int width, int height) {
                                   "shaders/SimpleFragmentShader.fragmentshader");
     data->MatrixID = glGetUniformLocation(data->programID, "MVP");
     data->vertexPosition_modelspaceID = glGetAttribLocation(data->programID, "vertexPosition_modelspace");
+}
 
-    data->Projection = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
-    data->View = glm::lookAt(
-            glm::vec3(4, 3, 3), // Camera is at (4,3,3), in World Space
-            glm::vec3(0, 0, 0), // and looks at the origin
-            glm::vec3(0, 1, 0)  // Head is up (set to 0,-1,0 to look upside-down)
+void HHVM_METHOD(OpenGL, setCameraSettings, const Array& cameraSettings) {
+    auto data = Native::data<OpenGL>(this_);
+
+    ArrayData *camSettings = cameraSettings.get();
+
+    data->Projection = glm::perspective(
+            (float)camSettings->getValue(0).toDouble(),
+            (float)camSettings->getValue(1).toDouble() / (float)camSettings->getValue(2).toDouble(),
+            (float)camSettings->getValue(3).toDouble(),
+            (float)camSettings->getValue(4).toDouble()
     );
+
+    data->View = glm::lookAt(
+            glm::vec3((float)camSettings->getValue(5).toDouble(), (float)camSettings->getValue(6).toDouble(), (float)camSettings->getValue(7).toDouble()), // Camera is at (4,3,3), in World Space
+            glm::vec3((float)camSettings->getValue(8).toDouble(), (float)camSettings->getValue(9).toDouble(), (float)camSettings->getValue(10).toDouble()), // and looks at the origin
+            glm::vec3(0, (float)camSettings->getValue(11).toDouble(), 0)  // Head is up (set to 0,-1,0 to look upside-down)
+    );
+
     data->Model = glm::mat4(1.0f);
     data->MVP = data->Projection * data->View * data->Model;
 }
@@ -208,6 +221,7 @@ void HHVM_METHOD(OpenGL, close) {
 void HHVMOpenGLExtension::initOpenGLClass() {
     HHVM_ME(OpenGL, __construct);
     HHVM_ME(OpenGL, render);
+    HHVM_ME(OpenGL, setCameraSettings);
     HHVM_ME(OpenGL, setBackgroundColour);
     HHVM_ME(OpenGL, setVertexBuffer);
     HHVM_ME(OpenGL, setColourBuffer);

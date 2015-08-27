@@ -9,6 +9,9 @@ class OpenGL {
     public function render(): void;
 
     <<__Native>>
+    public function setCameraSettings(array<float> $cameraSettings): void;
+
+    <<__Native>>
     public function setVertexBuffer(array<float> $vertices): void;
 
     <<__Native>>
@@ -181,5 +184,63 @@ class OpenGLCuboid extends OpenGLPolygon
             new OpenGLTriangle(new OpenGLVertex($nX, $nY, $nZ), new OpenGLVertex($oX, $nY, $oZ), new OpenGLVertex($oX, $nY, $nZ)),
             new OpenGLTriangle(new OpenGLVertex($nX, $nY, $nZ), new OpenGLVertex($oX, $nY, $nZ), new OpenGLVertex($nX, $oY, $nZ)),
         ]);
+    }
+}
+
+class OpenGLCamera
+{
+    private OpenGLVertex $cameraPosition;
+    private OpenGLVertex $cameraTarget;
+    private bool $yInvert = false;
+
+    private float $fovy;
+    private float $aspectX;
+    private float $aspectY;
+    private float $zNear;
+    private float $zFar;
+
+    public function __construct(float $aspectX = 4.0, float $aspectY = 3.0, float $fovy = 45.0, float $zNear = 0.1, float $zFar = 100.0): void
+    {
+        $this->fovy = $fovy;
+        $this->aspectX = $aspectX;
+        $this->aspectY = $aspectY;
+        $this->zNear = $zNear;
+        $this->zFar = $zFar;
+
+        $this->cameraPosition = new OpenGLVertex(4, 3, 3);
+        $this->cameraTarget = new OpenGLVertex(0, 0, 0);
+    }
+
+    public function setCameraPosition(OpenGLVertex $cameraPosition): void
+    {
+        $this->cameraPosition = $cameraPosition;
+    }
+
+    public function setCameraTarget(OpenGLVertex $cameraTarget): void
+    {
+        $this->cameraTarget = $cameraTarget;
+    }
+
+    public function setYInvert(bool $yInvert): void
+    {
+        $this->yInvert = $yInvert;
+    }
+
+    public function getCameraSettings()
+    {
+        return [
+            $this->fovy,
+            $this->aspectX,
+            $this->aspectY,
+            $this->zNear,
+            $this->zFar,
+            $this->cameraPosition->getX(),
+            $this->cameraPosition->getY(),
+            $this->cameraPosition->getZ(),
+            $this->cameraTarget->getX(),
+            $this->cameraTarget->getY(),
+            $this->cameraTarget->getZ(),
+            $this->yInvert ? -1 : 1,
+        ];
     }
 }
