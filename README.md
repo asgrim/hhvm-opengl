@@ -1,6 +1,9 @@
 HHVM OpenGL test
 ================
 
+WARNING - Do not actually use this. It is not intended to be real, maintanable, useful, well-built, or anything. It is probably about as far from production-quality thing as you can think of. It is purely an academic example, designed to go with a talk I wrote. Seriously, just don't even use this. Don't say I didn't warn you.
+---
+
 This is not very useful at all, but just demonstrates potential of using OpenGL library in an HHVM extension.
 
 Instructions (YMMV):
@@ -33,5 +36,4 @@ Example apache config:
     DirectoryIndex test.php
   </Directory>
 </VirtualHost>
-
 ```
