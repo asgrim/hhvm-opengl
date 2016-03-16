@@ -197,12 +197,14 @@ String HHVM_METHOD(OpenGL, getBackBufferContent) {
     auto data = Native::data<OpenGL>(this_);
 
     GLubyte *pixels = (GLubyte *) malloc(2 * data->width * data->height * sizeof(GLubyte));
-    glReadBuffer(GL_BACK);
+    glReadBuffer(GL_FRONT);
     glReadPixels(0, 0, data->width, data->height, GL_RGB, GL_UNSIGNED_BYTE, pixels);
 
     // @todo get rid of the writing to disk and return BMP directly
     String filename = String("/tmp/lol.bmp");
     WriteBMP(filename.c_str(), data->width, data->height, pixels);
+
+    free(pixels);
 
     return filename;
 }

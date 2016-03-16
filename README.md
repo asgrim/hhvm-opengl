@@ -8,6 +8,7 @@ This is not very useful at all, but just demonstrates potential of using OpenGL 
 
 Instructions (YMMV):
  * Need various deps (-dev packages of GLFW, GLEW, probably other stuff)
+ * On Ubuntu 15.10, needed to softlink libglfw.so: `ln -s /usr/lib/x86_64-linux-gnu/libglfw.so /usr/lib/libglfw.so`
  * `git clone`
  * `./build.sh`
  * Should successfully have built `hhvm_opengl.so` now...
