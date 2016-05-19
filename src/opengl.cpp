@@ -196,7 +196,7 @@ void HHVM_METHOD(OpenGL, render) {
 String HHVM_METHOD(OpenGL, getBackBufferContent) {
     auto data = Native::data<OpenGL>(this_);
 
-    GLubyte *pixels = (GLubyte *) malloc(2 * data->width * data->height * sizeof(GLubyte));
+    GLubyte *pixels = (GLubyte *) malloc(2 * data->width * data->height * sizeof(GLubyte) * 100);
     glReadBuffer(GL_FRONT);
     glReadPixels(0, 0, data->width, data->height, GL_RGB, GL_UNSIGNED_BYTE, pixels);
 
